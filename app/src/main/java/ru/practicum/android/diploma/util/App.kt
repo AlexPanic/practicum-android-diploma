@@ -17,6 +17,4 @@ class App : Application() {
 
         PermissionRequester.initialize(applicationContext)
     }
-
-
 }
