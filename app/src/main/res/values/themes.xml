@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="backgroundColor">@color/white_day</item>
         <item name="itemIconTint">@color/light_grey</item>
         <item name="android:textColorHint">@color/dark_grey</item>
