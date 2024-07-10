@@ -10,4 +10,4 @@ data class DetailsResponse(
     @SerializedName("per_page")
     val perPage: Int?,
     val items: List<DetailsDto>
-) : ResponseBase<Any?>()
+) : ResponseBase()

@@ -37,7 +37,7 @@ class DetailsRetrofitNetworkClient(
         return false
     }
 
-    override suspend fun doRequest(dto: Any): ResponseBase<Any?> {
+    override suspend fun doRequest(dto: Any): ResponseBase {
         if (!isConnected()) {
             return ResponseBase(NoInternetError())
         }
