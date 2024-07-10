@@ -7,12 +7,12 @@ import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.common.data.NetworkClient
 import ru.practicum.android.diploma.common.data.ResponseBase
 import ru.practicum.android.diploma.common.domain.BadRequestError
 import ru.practicum.android.diploma.common.domain.NoInternetError
 import ru.practicum.android.diploma.common.domain.ServerInternalError
+import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
@@ -39,6 +39,7 @@ class RetrofitNetworkClient(
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
         options[HhQueryOptions.TEXT.key] = dto.expression
+        options[HhQueryOptions.SEARCH_FIELD.key] = "name" // поиск только по названию вакансии
         if (dto.page != null) {
             options[HhQueryOptions.PAGE.key] = dto.page.toString()
         }
@@ -61,7 +62,7 @@ class RetrofitNetworkClient(
                         when (response.code()) {
                             HttpURLConnection.HTTP_OK -> {
                                 val vacancySearchResponse = response.body()
-                                if (vacancySearchResponse == null) {
+                                if (vacancySearchResponse == null || vacancySearchResponse.items.isEmpty()) {
                                     ResponseBase(VacancyNotFoundType())
                                 } else {
                                     VacancySearchResponse(
@@ -69,7 +70,7 @@ class RetrofitNetworkClient(
                                         vacancySearchResponse.page,
                                         vacancySearchResponse.pages,
                                         vacancySearchResponse.perPage,
-                                        vacancySearchResponse.items
+                                        vacancySearchResponse.items,
                                     )
                                 }
                             }

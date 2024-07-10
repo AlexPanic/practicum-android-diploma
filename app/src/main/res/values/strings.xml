@@ -42,7 +42,10 @@
     <string name="conditions">Условия</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="text_for_description_vacancy">Знание классических алгоритмов и структуры данных</string>
-    <string name="initial_salary_value">от $d ₽</string>
+    <string name="salary_from">от %s %s</string>
+    <string name="salary_to">до %s %s</string>
+    <string name="salary_from_to">от %s до %s %s</string>
+    <string name="salary_not_set">Зарплата не указана</string>
     <string name="not_found_or_deleted_vacancy">Вакансия не найдена или удалена</string>
     <string name="server_error">Ошибка сервера</string>
     <string name="favorites">Избранное</string>
@@ -55,13 +58,15 @@
     <string name="best_android_developers_3">Ерин Александр</string>
     <string name="best_android_developers_4">Зыкова Ангелина</string>
     <string name="best_android_developers_5">Заруба Никита</string>
+    <string name="eat">Еда</string>
+    <string name="android_developer">Android-разработчик, Москва</string>
 
     <plurals name="vacancies_counter">
-        <item quantity="zero">Найдено $d вакансий</item>
-        <item quantity="one">Найдено $d вакансия</item>
-        <item quantity="two">Найдено $d вакансии</item>
-        <item quantity="few">Найдено $d вакансий</item>
-        <item quantity="many">Найдено $d вакансий</item>
-        <item quantity="other">Найдено $d вакансий</item>
+        <item quantity="zero">Найдено %d вакансий</item>
+        <item quantity="one">Найдено %d вакансия</item>
+        <item quantity="two">Найдено %d вакансии</item>
+        <item quantity="few">Найдено %d вакансий</item>
+        <item quantity="many">Найдено %d вакансий</item>
+        <item quantity="other">Найдено %d вакансий</item>
     </plurals>
 </resources>

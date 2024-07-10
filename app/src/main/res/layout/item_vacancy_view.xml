@@ -1,50 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/backgroundColor">
+
     <ImageView
         android:id="@+id/vacancyLogo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/logo_placeholder_image"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
         android:paddingStart="@dimen/dp_16"
-        android:layout_height="wrap_content"/>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintStart_toEndOf="@+id/vacancyLogo"
-            app:layout_constraintTop_toTopOf="@+id/vacancyLogo"
-            android:layout_width="320dp"
-            android:paddingStart="10dp"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/vacancyNameAndCity"
-                style="@style/Medium22TextStyle"
-                android:scrollHorizontally="false"
-                android:maxLines="10"
-                android:maxLength="40"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:maxLines="10"
-                android:scrollHorizontally="false"
-                style="@style/Regular16TextStyle"
-                android:id="@+id/companyName"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/vacancyNameAndCity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                style="@style/Regular16TextStyle"
-                android:scrollHorizontally="false"
-                android:id="@+id/salaryText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/companyName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        android:src="@drawable/logo_placeholder_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        app:layout_constraintStart_toEndOf="@+id/vacancyLogo"
+        app:layout_constraintTop_toTopOf="@+id/vacancyLogo">
+
+        <TextView
+            android:id="@+id/vacancyNameAndCity"
+            style="@style/Medium22TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="10"
+            android:scrollHorizontally="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Вакансия, Город очень очень очень очень очень очень очень длинная вакансия и город" />
+
+        <TextView
+            android:id="@+id/companyName"
+            style="@style/Regular16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="10"
+            android:scrollHorizontally="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vacancyNameAndCity"
+            tools:text="Очень хорошая компания с очень очень очень очень длинным названием"/>
+
+        <TextView
+            android:id="@+id/salaryText"
+            style="@style/Regular16TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:scrollHorizontally="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/companyName"
+            tools:text="От 100 000 000 000 000 CUP"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,50 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/image_item_favorite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/logo_placeholder_image" />
+
+    <LinearLayout
+        android:id="@+id/layout_description_favorite_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_favorite_item"
+            style="@style/Medium22TextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/android_developer"
+            android:textColor="?attr/colorPrimary" />
+
+        <TextView
+            android:id="@+id/subtitle_favorite_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:text="@string/eat"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/price_favorite_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ys_display_regular"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="@dimen/sp_16"
+            tools:text="от 100 000 до 200 000 Р" />
+    </LinearLayout>
+
+</LinearLayout>
