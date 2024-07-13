@@ -41,6 +41,7 @@
     <string name="requirements">Требования</string>
     <string name="conditions">Условия</string>
     <string name="key_skills">Ключевые навыки</string>
+    <string name="contacts">Контакты</string>
     <string name="text_for_description_vacancy">Знание классических алгоритмов и структуры данных</string>
     <string name="salary_from">от %s %s</string>
     <string name="salary_to">до %s %s</string>

@@ -6,25 +6,20 @@
     android:layout_height="match_parent"
     android:background="?attr/backgroundColor">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/progressBarCl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ProgressBar
+        android:id="@+id/detailsProgressBar"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="0dp"
+        android:indeterminateTint="@color/blue"
         android:visibility="gone"
-        tools:visibility="gone">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/errorPlaceholderCl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="gone">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        tools:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,11 +29,10 @@
             android:id="@+id/arrowBackIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/arrow_back_24px" />
+            android:src="@drawable/arrow_back_24px" />
 
         <TextView
             android:id="@+id/screenNameVacancy"
@@ -46,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="16dp"
             android:text="@string/vacancy"
             app:layout_constraintStart_toEndOf="@+id/arrowBackIv"
             app:layout_constraintTop_toTopOf="parent" />
@@ -90,7 +84,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="32dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guidelineRightGl"
             app:layout_constraintStart_toStartOf="@+id/guidelineLeftGl"

@@ -20,7 +20,7 @@ class DetailsViewModel(
     private val vacancyState = MutableLiveData<DetailsState>()
     fun observeVacancyState(): LiveData<DetailsState> = vacancyState
 
-    fun getVacancy(vacancyId: String) {
+    fun getVacancy() {
         vacancyState.postValue(DetailsState.Loading)
         viewModelScope.launch {
             vacancyInteractor.getVacancyDetail(vacancyId).collect { result ->

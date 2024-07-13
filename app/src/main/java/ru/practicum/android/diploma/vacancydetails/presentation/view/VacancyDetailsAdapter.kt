@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
-import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetailsTest
+import ru.practicum.android.diploma.vacancydetails.domain.models.VacancyDetails
 
-class VacancyDetailsAdapter(private val vacancies: List<VacancyDetailsTest>) :
+class VacancyDetailsAdapter(private val vacancies: List<VacancyDetails>) :
     RecyclerView.Adapter<VacancyDetailsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VacancyDetailsViewHolder {
