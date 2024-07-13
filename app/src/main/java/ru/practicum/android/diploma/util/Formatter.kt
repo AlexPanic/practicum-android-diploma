@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.util
 import android.content.Context
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.common.domain.SalaryInfo
-import ru.practicum.android.diploma.search.presentation.models.Currency
+import ru.practicum.android.diploma.common.presentation.Currency
 
 object Formatter {
     fun moneyFormat(num: Int) = "%,d".format(num).replace(",", " ")

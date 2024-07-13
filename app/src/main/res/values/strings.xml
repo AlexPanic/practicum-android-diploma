@@ -5,7 +5,7 @@
     <string name="vacancy">Вакансия</string>
     <string name="enter_your_request">Введите запрос</string>
     <string name="no_internet">Нет интернета</string>
-    <string name="failed_to_get_vacancies">Не удалось получить список вакансий</string>
+    <string name="failed_to_get_vacancies">Не удалось получить\nсписок вакансий</string>
     <string name="failed_to_get_list">Не удалось получить список</string>
     <string name="no_vacancies">Таких вакансий нет</string>
     <string name="no_region">Такого региона нет</string>

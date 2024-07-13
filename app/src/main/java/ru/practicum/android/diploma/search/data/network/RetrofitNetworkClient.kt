@@ -13,7 +13,7 @@ import ru.practicum.android.diploma.common.data.ServerInternalError
 import ru.practicum.android.diploma.search.data.HhQueryOptions
 import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
-import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.util.isConnected
 import java.net.HttpURLConnection
 
@@ -49,7 +49,7 @@ class RetrofitNetworkClient(
                             HttpURLConnection.HTTP_OK -> {
                                 val vacancySearchResponse = response.body()
                                 if (vacancySearchResponse == null || vacancySearchResponse.items.isEmpty()) {
-                                    ResponseBase(VacancyNotFoundType())
+                                    ResponseBase(VacanciesNotFoundType())
                                 } else {
                                     VacancySearchResponse(
                                         vacancySearchResponse.found,
@@ -61,7 +61,7 @@ class RetrofitNetworkClient(
                                 }
                             }
 
-                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(VacancyNotFoundType())
+                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(VacanciesNotFoundType())
                             else -> ResponseBase(BadRequestError())
                         }
                     }

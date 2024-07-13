@@ -14,5 +14,5 @@ data class VacancyDetailsTest(
     val responsibilities: List<String>,
     val requirements: List<String>,
     val conditions: List<String>,
-    val keySkills: List<String>
+    val keySkills: List<String>?
 )

@@ -12,7 +12,7 @@ import ru.practicum.android.diploma.common.data.Success
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.search.domain.api.SearchInteractor
 import ru.practicum.android.diploma.search.domain.models.SearchResult
-import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.util.SingleLiveEvent
 
@@ -20,19 +20,22 @@ class SearchViewModel(
     private val interactor: SearchInteractor,
 ) : ViewModel() {
     companion object {
-        const val SEARCH_DEBOUNCE_DELAY = 5000L
-        const val ITEMS_PER_PAGE = 10
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+        const val ITEMS_PER_PAGE = 20
     }
 
     private var latestSearchText: String? = null
     private var searchJob: Job? = null
-    private var isNextPageLoading = false
 
     private val _toast = SingleLiveEvent<String>()
     fun observeToast(): LiveData<String> = _toast
 
     private val _state = MutableLiveData<SearchState>()
     fun observeState(): LiveData<SearchState> = _state
+
+    fun stopSearch() {
+        searchJob?.cancel()
+    }
 
     fun searchDebounce(changedText: String, page: Int) {
         if (changedText.isEmpty()/* || latestSearchText == changedText*/) {
@@ -73,7 +76,7 @@ class SearchViewModel(
                 }
             }
 
-            is VacancyNotFoundType -> {
+            is VacanciesNotFoundType -> {
                 renderState(
                     SearchState.Empty
                 )

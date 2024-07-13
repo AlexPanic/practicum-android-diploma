@@ -7,4 +7,5 @@ sealed interface FavouritesStates {
     object Empty : FavouritesStates
     class NotEmpty(val vacancies: ArrayList<VacancyBase>) : FavouritesStates
     data class Error(val errorType: IOException) : FavouritesStates
+
 }

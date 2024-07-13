@@ -22,7 +22,7 @@ import ru.practicum.android.diploma.common.data.ErrorType
 import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.common.domain.VacancyBase
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
-import ru.practicum.android.diploma.search.domain.models.VacancyNotFoundType
+import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.search.presentation.models.SearchState
 import ru.practicum.android.diploma.search.presentation.viewmodel.SearchViewModel
 import ru.practicum.android.diploma.util.getCountableVacancies
@@ -68,7 +68,7 @@ class SearchFragment : Fragment() {
                 }
 
                 is SearchState.Empty -> {
-                    showErrorOrEmptySearch(VacancyNotFoundType())
+                    showErrorOrEmptySearch(VacanciesNotFoundType())
                 }
 
                 is SearchState.Error -> {
@@ -88,6 +88,9 @@ class SearchFragment : Fragment() {
             if (searchMask.isNotEmpty()) {
                 changeDrawableClearText(binding.editTextSearch)
                 viewModel.searchDebounce(searchMask, 0)
+            } else {
+                changeDrawableSearchIcon(binding.editTextSearch)
+                viewModel.stopSearch()
             }
         }
 
@@ -135,11 +138,16 @@ class SearchFragment : Fragment() {
         with(binding) {
             placeHolderImage.isVisible = true
             placeHolderImage.setImageResource(R.drawable.image_search_empty)
+            searchProgressBar.isVisible = false
             placeHolderText.isVisible = false
             searchResultsRV.isVisible = false
             vacanciesCountText.isVisible = false
         }
-        vacancySearchAdapter.vacancies.clear()
+        val adapterListSize = vacancySearchAdapter.vacancies.size
+        if (adapterListSize > 0) {
+            vacancySearchAdapter.vacancies.clear()
+            vacancySearchAdapter.notifyItemRangeRemoved(0, adapterListSize)
+        }
     }
 
     private fun showContent(state: SearchState.Content) {
@@ -186,7 +194,7 @@ class SearchFragment : Fragment() {
             placeHolderText.isVisible = true
         }
         when (type) {
-            is VacancyNotFoundType -> {
+            is VacanciesNotFoundType -> {
                 with(binding) {
                     vacanciesCountText.isVisible = true
                     vacanciesCountText.text = getString(R.string.no_vacancies)

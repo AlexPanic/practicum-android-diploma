@@ -26,7 +26,7 @@ data class Details(
     val employment: NameInfo?,
     val schedule: NameInfo?,
     val description: String,
-    val keySkill: List<String>,
+    val keySkill: List<String>?,
     val contacts: Contacts?,
     val hhVacancyLink: String,
 )

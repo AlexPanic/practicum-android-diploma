@@ -17,8 +17,9 @@ class VacancyDetailsFragment : Fragment() {
 
     private var _binding: FragmentVacancyDetailsBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: DetailsViewModel by viewModel { parametersOf(arguments?.getString(ARGS_VACANCY_ID)) }
-    private lateinit var adapter: VacancyDetailsAdapter
+
+    private val viewModel by viewModel<DetailsViewModel>()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
@@ -28,43 +29,23 @@ class VacancyDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
-        observeViewModel()
-
-        viewModel.getVacancy()
-    }
-
-    private fun setupRecyclerView() {
-        adapter = VacancyDetailsAdapter(emptyList())
-        binding.vacancyDetailsRV.layoutManager = LinearLayoutManager(context)
-        binding.vacancyDetailsRV.adapter = adapter
-    }
-
-    private fun observeViewModel() {
+        val vacancyId = requireArguments().getString(ARGS_VACANCY_ID)
+        if (vacancyId != null) {
+            viewModel.getVacancy(vacancyId)
+        }
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
-                is DetailsState.Loading -> {
-                    binding.detailsProgressBar.visibility = View.VISIBLE
-                    binding.vacancyDetailsRV.visibility = View.GONE
-                    binding.imageVacancyNotFoundError.visibility = View.GONE
-                    binding.notFoundOrDeletedVacancy.visibility = View.GONE
-                }
-
                 is DetailsState.Content -> {
-                    binding.detailsProgressBar.visibility = View.GONE
-                    binding.vacancyDetailsRV.visibility = View.VISIBLE
-                    adapter = VacancyDetailsAdapter(listOf(state.vacancy))
-                    binding.vacancyDetailsRV.adapter = adapter
+                    binding.testVac.text = "${state.vacancy.name} ${state.vacancy.details}"
                 }
 
-                is DetailsState.Error -> {
-                    binding.detailsProgressBar.visibility = View.GONE
-                    binding.vacancyDetailsRV.visibility = View.GONE
-                    binding.imageVacancyNotFoundError.visibility = View.VISIBLE
-                    binding.notFoundOrDeletedVacancy.visibility = View.VISIBLE
-                }
+                else -> {}
             }
+
         }
+        // showToast("vacancyId=$vacancyId")
+        binding.favoriteVacansyIv.setOnClickListener {}
+        
     }
 
     override fun onDestroyView() {

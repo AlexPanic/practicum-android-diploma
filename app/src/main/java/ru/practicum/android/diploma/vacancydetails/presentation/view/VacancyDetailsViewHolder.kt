@@ -33,6 +33,7 @@ class VacancyDetailsViewHolder(private val binding: ItemVacancyDetailsViewBindin
             .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
             .into(binding.logoCompanyIv)
 
+
         binding.vacancyResponsibilitiesTv.text =
             Html.fromHtml(vacancy.details.description, Html.FROM_HTML_MODE_LEGACY)
         binding.vacancyRequirementsTv.text =
@@ -67,5 +68,6 @@ class VacancyDetailsViewHolder(private val binding: ItemVacancyDetailsViewBindin
             binding.contacts.visibility = View.GONE
             binding.vacancyContactsCommentTv.visibility = View.GONE
         }
+
     }
 }

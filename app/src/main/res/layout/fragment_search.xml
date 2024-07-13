@@ -102,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/placeHolderImage"
                 android:gravity="center"
+                android:paddingHorizontal="@dimen/dp_36"
                 tools:text="@string/failed_to_get_vacancies" />
         </RelativeLayout>
 

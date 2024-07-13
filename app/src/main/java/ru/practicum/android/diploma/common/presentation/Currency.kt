@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.search.presentation.models
+package ru.practicum.android.diploma.common.presentation
 
 enum class Currency(val abbr: String, val curName: String) {
     AZN("₼", "Манаты"),

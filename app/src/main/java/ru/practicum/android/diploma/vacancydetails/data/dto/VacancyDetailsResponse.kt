@@ -14,7 +14,7 @@ data class VacancyDetailsResponse(
     val employment: NameInfoDto?,
     val schedule: NameInfoDto?,
     val description: String,
-    val keySkill: List<String>,
+    val keySkill: List<String>?,
     val contacts: ContactsDto?,
     @SerializedName("alternate_url")
     val hhVacancyLink: String,
