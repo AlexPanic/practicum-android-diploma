@@ -18,18 +18,6 @@
         android:translationZ="99999dp"
         android:visibility="gone"/>
 
-    <ProgressBar
-        android:id="@+id/detailsProgressBar"
-        android:layout_width="@dimen/dp_36"
-        android:layout_height="0dp"
-        android:indeterminateTint="@color/blue"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/errorPlaceholderCl"
         android:layout_width="match_parent"
@@ -106,7 +94,7 @@
             app:layout_constraintGuide_end="16dp" />
 
         <ImageView
-            android:id="@+id/image_vacancy_not_found_error"
+            android:id="@+id/errorPlaceholderIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/image_vacancy_not_found_error"
@@ -117,7 +105,7 @@
             app:layout_constraintTop_toBottomOf="@+id/screenNameVacancy" />
 
         <TextView
-            android:id="@+id/not_found_or_deleted_vacancy"
+            android:id="@+id/errorPlaceholderTv"
             style="@style/Medium22TextStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,9 +113,9 @@
             android:gravity="center"
             android:text="@string/not_found_or_deleted_vacancy"
             android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@+id/image_vacancy_not_found_error"
-            app:layout_constraintStart_toStartOf="@+id/image_vacancy_not_found_error"
-            app:layout_constraintTop_toBottomOf="@+id/image_vacancy_not_found_error" />
+            app:layout_constraintEnd_toEndOf="@+id/errorPlaceholderIv"
+            app:layout_constraintStart_toStartOf="@+id/errorPlaceholderIv"
+            app:layout_constraintTop_toBottomOf="@+id/errorPlaceholderIv" />
 
         <ScrollView
             android:layout_width="0dp"
@@ -143,6 +131,18 @@
                 layout="@layout/item_vacancy_details_view" />
 
         </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/detailsProgressBar"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="0dp"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

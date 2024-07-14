@@ -6,15 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.common.data.BadRequestError
+import ru.practicum.android.diploma.common.data.ErrorType
+import ru.practicum.android.diploma.common.data.NoInternetError
 import ru.practicum.android.diploma.databinding.FragmentVacancyDetailsBinding
 import ru.practicum.android.diploma.databinding.ItemVacancyDetailsViewBinding
 import ru.practicum.android.diploma.util.Formatter
+import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
 import ru.practicum.android.diploma.vacancydetails.presentation.models.DetailsState
 import ru.practicum.android.diploma.vacancydetails.presentation.viewmodel.DetailsViewModel
 
@@ -45,7 +51,8 @@ class VacancyDetailsFragment : Fragment() {
                     val vacancyDetailsBinding = ItemVacancyDetailsViewBinding.bind(binding.root)
                     vacancyDetailsBinding.nameVacancyTv.text = Html.fromHtml(
                         "${state.vacancy.name}," +
-                            " ${state.vacancy.employerInfo.areaName}", Html.FROM_HTML_MODE_LEGACY
+                            " ${state.vacancy.employerInfo.areaName}",
+                        Html.FROM_HTML_MODE_LEGACY
                     )
                     vacancyDetailsBinding.nameCompanyTv.text = Html.fromHtml(
                         state.vacancy.employerInfo.employerName,
@@ -73,18 +80,71 @@ class VacancyDetailsFragment : Fragment() {
                         .placeholder(R.drawable.logo_placeholder_image)
                         .transform(CenterCrop(), RoundedCorners(trackCornerRadius))
                         .into(vacancyDetailsBinding.logoCompanyIv)
+                    binding.detailsProgressBar.isVisible = false
+                    binding.itemVacancyDetails.itemVacancyDetailsDescription.isVisible = true
                 }
-                else -> {}
+
+                is DetailsState.Error -> {
+                    showTypeErrorOrEmpty(state.errorType)
+                }
+
+                is DetailsState.Empty -> {
+                    showTypeErrorOrEmpty(DetailsNotFoundType())
+                }
+
+                is DetailsState.Loading -> {
+                    showLoading()
+                }
             }
 
         }
         // showToast("vacancyId=$vacancyId")
         binding.favoriteVacansyIv.setOnClickListener {}
+
+        binding.arrowBackIv.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showTypeErrorOrEmpty(type: ErrorType) {
+        binding.detailsProgressBar.isVisible = false
+        binding.errorPlaceholderCl.isVisible = true
+        binding.itemVacancyDetails.itemVacancyDetailsDescription.isVisible = false
+        when (type) {
+            is BadRequestError -> {
+                binding.errorPlaceholderTv.isVisible = true
+                binding.errorPlaceholderTv.text = getString(R.string.server_error)
+
+                binding.errorPlaceholderIv.isVisible = true
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_server_error)
+            }
+            is NoInternetError -> {
+                binding.errorPlaceholderTv.isVisible = true
+                binding.errorPlaceholderTv.text = getString(R.string.no_internet)
+
+                binding.errorPlaceholderIv.isVisible = true
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_no_internet_error)
+            }
+            else -> {
+                binding.errorPlaceholderTv.isVisible = true
+                binding.errorPlaceholderTv.text = getString(R.string.not_found_or_deleted_vacancy)
+
+                binding.errorPlaceholderIv.isVisible = true
+                binding.errorPlaceholderIv.setImageResource(R.drawable.image_vacancy_not_found_error)
+            }
+        }
+    }
+
+    private fun showLoading() {
+        binding.itemVacancyDetails.itemVacancyDetailsDescription.isVisible = false
+        binding.detailsProgressBar.isVisible = true
+        binding.errorPlaceholderIv.isVisible = false
+        binding.errorPlaceholderTv.isVisible = false
     }
 
     companion object {

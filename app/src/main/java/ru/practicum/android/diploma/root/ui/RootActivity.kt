@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.root.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import ru.practicum.android.diploma.R
@@ -22,6 +23,13 @@ class RootActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         binding.menuBNV.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.vacancyDetailsFragment, R.id.filterFragment -> binding.menuBNV.isVisible = false
+                else -> binding.menuBNV.isVisible = true
+            }
+        }
     }
 
 }
