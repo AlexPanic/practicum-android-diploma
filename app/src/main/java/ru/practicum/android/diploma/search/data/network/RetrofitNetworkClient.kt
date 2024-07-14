@@ -15,12 +15,47 @@ import ru.practicum.android.diploma.search.data.dto.VacancySearchRequest
 import ru.practicum.android.diploma.search.data.dto.VacancySearchResponse
 import ru.practicum.android.diploma.search.domain.models.VacanciesNotFoundType
 import ru.practicum.android.diploma.util.isConnected
+import java.io.IOException
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClient(
     private val apiService: HhApiService,
     private val context: Context,
 ) : NetworkClient {
+
+    override suspend fun doRequest(dto: Any): ResponseBase {
+        if (!isConnected(context)) {
+            return ResponseBase(NoInternetError())
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                when (dto) {
+                    is VacancySearchRequest -> {
+                        val options = searchOptions(dto)
+
+                        val response = apiService.findVacancies(options)
+                        when (response.code()) {
+                            HttpURLConnection.HTTP_OK -> convertVacancySearchResponse(response.body())
+                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(VacanciesNotFoundType())
+                            else -> ResponseBase(BadRequestError())
+                        }
+
+                    }
+
+                    else -> ResponseBase(BadRequestError())
+                }
+
+            } catch (e: HttpException) {
+                e.message?.let { Log.e("Http", it) }
+                ResponseBase(ServerInternalError())
+            }
+            // выполняется, если в эмуляторе интернет смартфона включен, а на компьютере интернет отпал
+            catch (e: IOException) {
+                e.message?.let { Log.e("IO", it) }
+                ResponseBase(ServerInternalError())
+            }
+        }
+    }
 
     private fun searchOptions(dto: VacancySearchRequest): HashMap<String, String> {
         val options: HashMap<String, String> = HashMap()
@@ -35,44 +70,17 @@ class RetrofitNetworkClient(
         return options
     }
 
-    override suspend fun doRequest(dto: Any): ResponseBase {
-        if (!isConnected(context)) {
-            return ResponseBase(NoInternetError())
+    private fun convertVacancySearchResponse(responseBody: VacancySearchResponse?): ResponseBase =
+        if (responseBody == null || responseBody.items.isEmpty()) {
+            ResponseBase(VacanciesNotFoundType())
+        } else {
+            VacancySearchResponse(
+                responseBody.found,
+                responseBody.page,
+                responseBody.pages,
+                responseBody.perPage,
+                responseBody.items,
+            )
         }
-        return withContext(Dispatchers.IO) {
-            try {
-                when (dto) {
-                    is VacancySearchRequest -> {
-                        val options = searchOptions(dto)
-                        val response = apiService.findVacancies(options)
-                        when (response.code()) {
-                            HttpURLConnection.HTTP_OK -> {
-                                val vacancySearchResponse = response.body()
-                                if (vacancySearchResponse == null || vacancySearchResponse.items.isEmpty()) {
-                                    ResponseBase(VacanciesNotFoundType())
-                                } else {
-                                    VacancySearchResponse(
-                                        vacancySearchResponse.found,
-                                        vacancySearchResponse.page,
-                                        vacancySearchResponse.pages,
-                                        vacancySearchResponse.perPage,
-                                        vacancySearchResponse.items,
-                                    )
-                                }
-                            }
 
-                            HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(VacanciesNotFoundType())
-                            else -> ResponseBase(BadRequestError())
-                        }
-                    }
-
-                    else -> ResponseBase(BadRequestError())
-                }
-
-            } catch (e: HttpException) {
-                e.message?.let { Log.e("Http", it) }
-                ResponseBase(ServerInternalError())
-            }
-        }
-    }
 }

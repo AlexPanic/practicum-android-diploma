@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.search.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,7 @@ class SearchViewModel(
     }
 
     private var latestSearchText: String? = null
+    private var latestPage: Int? = null
     private var searchJob: Job? = null
 
     private val _toast = SingleLiveEvent<String>()
@@ -34,14 +36,21 @@ class SearchViewModel(
     fun observeState(): LiveData<SearchState> = _state
 
     fun stopSearch() {
-        searchJob?.cancel()
+        latestPage = null
+        if (searchJob != null && searchJob!!.isActive) {
+            searchJob?.cancel()
+        }
     }
 
     fun searchDebounce(changedText: String, page: Int) {
-        if (changedText.isEmpty()/* || latestSearchText == changedText*/) {
+        Log.d("mine", "page $page/$latestPage")
+
+        if (changedText.trim().isEmpty() || page == latestPage) {
             return
         }
+        Log.d("mine", "search($changedText, $page)")
 
+        latestPage = page
         latestSearchText = changedText
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
@@ -51,7 +60,7 @@ class SearchViewModel(
     }
 
     private fun searchRequest(newSearchText: String, page: Int) {
-        if (newSearchText.isNotEmpty()) {
+        if (newSearchText.trim().isNotEmpty()) {
             if (page == 0) {
                 renderState(SearchState.Loading)
             }
@@ -66,6 +75,9 @@ class SearchViewModel(
 
     private fun processResult(searchResult: SearchResult?, errorType: ErrorType) {
         val vacancies = mutableListOf<VacancyBase>()
+
+        Log.d("mine", "errorType=${errorType.javaClass}")
+
         when (errorType) {
             is Success -> {
                 if (searchResult != null) {

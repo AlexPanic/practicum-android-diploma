@@ -33,7 +33,6 @@ class FavouriteVacancyRepositoryImpl(
         emit(vacancyId)
     }
 
-
     private fun convertToVacancyEntity(track: VacancyDetails): VacancyEntity {
         return vacancyDbConverter.map(track)
     }

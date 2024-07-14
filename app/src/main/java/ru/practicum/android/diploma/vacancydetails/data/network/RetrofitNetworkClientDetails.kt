@@ -14,13 +14,13 @@ import ru.practicum.android.diploma.util.isConnected
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsRequest
 import ru.practicum.android.diploma.vacancydetails.data.dto.VacancyDetailsResponse
 import ru.practicum.android.diploma.vacancydetails.domain.models.DetailsNotFoundType
+import java.io.IOException
 import java.net.HttpURLConnection
 
 class RetrofitNetworkClientDetails(
     private val hhApiServiceDetails: HhApiServiceDetails,
     private val context: Context,
 ) : NetworkClient {
-
     override suspend fun doRequest(dto: Any): ResponseBase {
         if (!isConnected(context)) {
             return ResponseBase(NoInternetError())
@@ -31,16 +31,7 @@ class RetrofitNetworkClientDetails(
                     is VacancyDetailsRequest -> {
                         val response = hhApiServiceDetails.getVacancyDetails(dto.vacancyID)
                         when (response.code()) {
-                            HttpURLConnection.HTTP_OK -> {
-                                val vacancyDetailsResponse = response.body()
-                                if (vacancyDetailsResponse == null) {
-                                    ResponseBase(DetailsNotFoundType())
-                                } else {
-                                    createVacancyDetails(vacancyDetailsResponse)
-                                }
-
-                            }
-
+                            HttpURLConnection.HTTP_OK -> convertVacancyDetailsResponse(response.body())
                             HttpURLConnection.HTTP_NOT_FOUND -> ResponseBase(DetailsNotFoundType())
                             else -> ResponseBase(BadRequestError())
                         }
@@ -53,47 +44,32 @@ class RetrofitNetworkClientDetails(
                 e.message?.let { Log.e("Http", it) }
                 ResponseBase(ServerInternalError())
             }
+            // выполняется, если в эмуляторе интернет смартфона включен, а на компьютере интернет отпал
+            catch (e: IOException) {
+                e.message?.let { Log.e("IO", it) }
+                ResponseBase(ServerInternalError())
+            }
         }
     }
 
-    private fun createVacancyDetails(details: VacancyDetailsResponse): ResponseBase {
-        return VacancyDetailsResponse(
-            details.id,
-            details.name,
-            details.area,
-            details.address,
-            details.employer,
-            details.salary,
-            details.experience,
-            details.employment,
-            details.schedule,
-            details.description,
-            details.keySkill,
-            details.contacts,
-            details.hhVacancyLink
-        )
-    }
+    private fun convertVacancyDetailsResponse(responseBody: VacancyDetailsResponse?): ResponseBase =
+        if (responseBody == null) {
+            ResponseBase(DetailsNotFoundType())
+        } else {
+            VacancyDetailsResponse(
+                responseBody.id,
+                responseBody.name,
+                responseBody.area,
+                responseBody.address,
+                responseBody.employer,
+                responseBody.salary,
+                responseBody.experience,
+                responseBody.employment,
+                responseBody.schedule,
+                responseBody.description,
+                responseBody.keySkill,
+                responseBody.contacts,
+                responseBody.hhVacancyLink
+            )
+        }
 }
-
-//    companion object {
-//        const val SERVER_ERROR = 500
-//    }
-//
-//    override suspend fun doRequest(dto: Any): ResponseBase {
-//        if (!isConnected(context)) {
-//            return ResponseBase(NoInternetError())
-//        }
-//        return withContext(Dispatchers.IO) {
-//            try {
-//                hhApiServiceDetails.getVacancyDetails(dto.toString())
-//            } catch (e: HttpException) {
-//                when (e.code()) {
-//                    SERVER_ERROR -> ResponseBase(ServerInternalError())
-//                    else -> ResponseBase(BadRequestError())
-//                }
-//            } catch (e: HttpException) {
-//                Log.e("Http", e.toString())
-//                ResponseBase(NoInternetError())
-//            }
-//        }
-//    }

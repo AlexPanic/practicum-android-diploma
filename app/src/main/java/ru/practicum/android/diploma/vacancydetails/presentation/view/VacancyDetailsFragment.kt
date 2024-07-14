@@ -95,6 +95,8 @@ class VacancyDetailsFragment : Fragment() {
                 is DetailsState.Loading -> {
                     showLoading()
                 }
+                
+                else -> {}
             }
 
         }

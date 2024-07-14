@@ -74,4 +74,3 @@ data class NameInfoDto(
     val id: String?,
     val name: String
 )
-
