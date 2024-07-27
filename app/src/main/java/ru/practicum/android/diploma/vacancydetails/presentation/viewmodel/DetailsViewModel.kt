@@ -97,10 +97,12 @@ class DetailsViewModel(
     }
 
     fun getVacancy(vacancyId: String) {
-        renderState(DetailsState.Loading)
-        viewModelScope.launch {
-            vacancyInteractor.getVacancyDetail(vacancyId).collect { pair ->
-                processResult(pair.first, pair.second)
+        if (vacancyId.isNotEmpty()) {
+            renderState(DetailsState.Loading)
+            viewModelScope.launch {
+                vacancyInteractor.getVacancyDetail(vacancyId).collect { pair ->
+                    processResult(pair.first, pair.second)
+                }
             }
         }
     }

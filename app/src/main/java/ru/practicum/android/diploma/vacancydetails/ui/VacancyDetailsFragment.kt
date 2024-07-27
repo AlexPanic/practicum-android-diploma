@@ -30,7 +30,7 @@ class VacancyDetailsFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModel<DetailsViewModel>()
     private var vacancy: VacancyDetails? = null
-    private var vacancyID: String? = null
+    private var vacancyID: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentVacancyDetailsBinding.inflate(inflater, container, false)
@@ -39,12 +39,20 @@ class VacancyDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        vacancyID = requireArguments().getString(ARGS_VACANCY_ID)
-        if (vacancyID != null) {
-            viewModel.getVacancy(vacancyID!!)
+        vacancyID = requireArguments().getString(ARGS_VACANCY_ID).toString()
+        viewModel.getVacancy(vacancyID)
+        setBindings()
+        observeVacancyDetails()
+        viewModel.vacancyExists.observe(viewLifecycleOwner) { exists ->
+            if (exists && vacancyID.isNotEmpty()) {
+                viewModel.getVacancyDatabase(vacancyID)
+            } else {
+                showTypeErrorOrEmpty(NoInternetError())
+            }
         }
+    }
 
+    private fun observeVacancyDetails() {
         viewModel.observeVacancyState().observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DetailsState.Content -> {
@@ -52,17 +60,9 @@ class VacancyDetailsFragment : Fragment() {
                 }
 
                 is DetailsState.NoInternet -> {
-                    if (vacancyID != null) {
-                        viewModel.checkVacancyInDatabase(vacancyID!!)
+                    if (vacancyID.isNotEmpty()) {
+                        viewModel.checkVacancyInDatabase(vacancyID.toString())
                     }
-                    viewModel.vacancyExists.observe(viewLifecycleOwner) { exists ->
-                        if (exists && vacancyID != null) {
-                            viewModel.getVacancyDatabase(vacancyID!!)
-                        } else {
-                            showTypeErrorOrEmpty(NoInternetError())
-                        }
-                    }
-
                 }
 
                 is DetailsState.Error -> {
@@ -71,8 +71,8 @@ class VacancyDetailsFragment : Fragment() {
 
                 is DetailsState.Empty -> {
                     showTypeErrorOrEmpty(DetailsNotFoundType())
-                    if (vacancyID != null) {
-                        viewModel.deleteFavouriteVacancy(vacancyID!!)
+                    if (vacancyID.isNotEmpty()) {
+                        viewModel.deleteFavouriteVacancy(vacancyID)
                     }
                 }
 
@@ -81,11 +81,9 @@ class VacancyDetailsFragment : Fragment() {
                 }
 
                 is DetailsState.isFavorite -> checkFavouriteIcon(state.isFav)
-                else -> {}
-            }
 
+            }
         }
-        setBindings()
     }
 
     private fun showContent(state: DetailsState.Content) {

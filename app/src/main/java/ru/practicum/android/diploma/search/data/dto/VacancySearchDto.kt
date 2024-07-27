@@ -44,4 +44,3 @@ data class SalaryDto(
     val from: Int?,
     val to: Int?,
 )
-
